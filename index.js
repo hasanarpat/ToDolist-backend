@@ -71,32 +71,6 @@ app.post("/", function (req, res) {
   res.send(message);
 });
 
-app.post("/delete", function (req, res) {
-  const checkedItemId = req.body.checkbox;
-  const listName = req.body.listName;
-
-  if (listName === "Today") {
-    Item.findByIdAndRemove(checkedItemId, function (err) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log("success");
-        res.redirect("/");
-      }
-    });
-  } else {
-    List.findOneAndUpdate(
-      { name: listName },
-      { $pull: { items: { _id: checkedItemId } } },
-      function (err, foundList) {
-        if (!err) {
-          res.redirect("/" + listName);
-        }
-      }
-    );
-  }
-});
-
 let port = process.env.PORT;
 if (port == null || port == "") {
   port = 8000;
